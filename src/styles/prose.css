@@ -35,7 +35,7 @@
   padding: 20px;
   overflow-x: auto;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: var(--radius-box);
   font-size: var(--text-code);
 }
 .prose pre,
@@ -60,7 +60,7 @@
 .prose img {
   max-width: 100%;
   height: auto;
-  border-radius: 6px;
+  border-radius: var(--radius-box);
 }
 .prose table {
   display: block;

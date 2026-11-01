@@ -1,6 +1,7 @@
 :root {
   --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, monospace;
+  --radius-box: 0.75rem;
   --text-label: 0.8125rem;
   --text-small: 0.875rem;
   --text-control: 1rem;

@@ -97,7 +97,7 @@ main {
   color: var(--on-accent);
   padding: 10px 17px;
   border: 1px solid var(--accent);
-  border-radius: 5px;
+  border-radius: var(--radius-box);
 }
 .primary:hover {
   background: var(--ink);
@@ -151,7 +151,7 @@ main {
   gap: 20px;
   align-items: center;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: var(--radius-box);
 }
 .bottom-note p {
   margin: 0;
@@ -191,6 +191,7 @@ footer {
 .notice {
   padding: 12px 16px;
   border-left: 2px solid var(--accent);
+  border-radius: var(--radius-box);
   background: var(--panel);
   font-size: var(--text-small);
   color: var(--muted);
