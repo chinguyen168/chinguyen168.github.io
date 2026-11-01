@@ -4,7 +4,7 @@ import PageHeader from '../components/PageHeader.astro';
 import { profile } from '../data/profile';
 ---
 
-<BaseLayout title="About & experience" description={profile.about}>
+<BaseLayout title="About & experience" description={profile.description}>
   <PageHeader eyebrow="The person behind the code" description={profile.about}>
     Developer.
     <br />
@@ -12,27 +12,59 @@ import { profile } from '../data/profile';
     <br />
     <em>Always learning.</em>
   </PageHeader>
+  <div class="biography">
+    {profile.biography.map((paragraph) => (
+      <p>{paragraph}</p>
+    ))}
+  </div>
   <div class="section-top">
     <h2>Experience</h2>
-    <span class="mono">Current chapter</span>
   </div>
-  {profile.experience.map((experience) => (
+  <h3>
+    {profile.experience.company}{' '}
+    <span class="location">· {profile.experience.location}</span>
+  </h3>
+  {profile.experience.roles.map((experience) => (
     <section class="timeline">
       <>
         <span class="tag">{experience.period}</span>
         <h3>{experience.title}</h3>
         <p class="description">{experience.description}</p>
+        {experience.responsibilities.length > 0 && (
+          <ul class="description">
+            {experience.responsibilities.map((responsibility) => (
+              <li>{responsibility}</li>
+            ))}
+          </ul>
+        )}
+        {experience.workflow && (
+          <p class="description">{experience.workflow}</p>
+        )}
       </>
     </section>
   ))}
   <div class="section-top">
-    <h2>Tools & interests</h2>
+    <h2>Earlier chapters</h2>
   </div>
-  <div class="chips">
-    {profile.interests.map((interest) => (
-      <span>{interest}</span>
+  {profile.earlierExperience.map((experience) => (
+    <section class="timeline">
+      <span class="tag">{experience.period}</span>
+      <h3>{experience.title}</h3>
+      <p class="company">{experience.company}</p>
+      <p class="description">{experience.description}</p>
+    </section>
+  ))}
+  <div class="section-top">
+    <h2>Skills — what I work with</h2>
+  </div>
+  <dl class="skills">
+    {profile.skills.map((skill) => (
+      <div>
+        <dt>{skill.title}</dt>
+        <dd class="description">{skill.description}</dd>
+      </div>
     ))}
-  </div>
+  </dl>
   <div class="bottom-note">
     <span aria-hidden="true">↗</span>
     <p>
@@ -53,14 +85,32 @@ import { profile } from '../data/profile';
   .timeline h3 {
     font-size: 24px;
   }
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  .biography {
+    max-width: 650px;
+    color: var(--muted);
   }
-  .chips span {
-    background: var(--panel);
-    padding: 6px 12px;
-    font-size: 12px;
+  .location,
+  .company {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .timeline ul {
+    padding-left: 20px;
+  }
+  .timeline li + li {
+    margin-top: 6px;
+  }
+  .skills {
+    margin: 0;
+  }
+  .skills > div {
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+  }
+  .skills dt {
+    font-weight: 500;
+  }
+  .skills dd {
+    margin: 6px 0 0;
   }
 </style>

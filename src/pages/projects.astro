@@ -4,7 +4,7 @@ import PageHeader from '../components/PageHeader.astro';
 import { projects } from '../data/projects';
 import { profile } from '../data/profile';
 const description =
-  'A selection of projects from my GitHub. Experiments, starting points, and ideas turned into code.';
+  'My work at Magnolia, this personal site, and earlier projects in banking and insurance.';
 ---
 
 <BaseLayout title="Projects" description={description}>
@@ -13,6 +13,15 @@ const description =
     <br />
     <em>by building.</em>
   </PageHeader>
+  <div class="workflow">
+    <h2>How I build today</h2>
+    <p>
+      My current work centers on Magnolia. In my own daily development, Claude
+      Code helps me take ideas from feature drafts and written specifications to
+      working code. I guide the process, review the changes, and refine the
+      result.
+    </p>
+  </div>
   <div class="project-grid">
     {projects.map((project, index) => (
       <article class="project-card">
@@ -21,21 +30,35 @@ const description =
             {String(index + 1).padStart(2, '0')} / PROJECT
           </span>
           <h2>{project.name}</h2>
+          <p class="context">{project.context}</p>
           <p class="description">{project.description}</p>
           <p class="meta">{project.technologies.join(' · ')}</p>
-          <a
-            href={`${profile.github}/${project.repo}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View repository ↗
-          </a>
+          {project.repo && (
+            <a
+              href={`${profile.github}/${project.repo}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View repository ↗
+            </a>
+          )}
         </>
       </article>
     ))}
   </div>
 </BaseLayout>
 <style>
+  .workflow {
+    max-width: 650px;
+    margin-top: 32px;
+  }
+  .workflow p {
+    color: var(--muted);
+  }
+  .context {
+    color: var(--muted);
+    font-size: 12px;
+  }
   .project-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
