@@ -1,0 +1,86 @@
+---
+import PostCard from './PostCard.astro';
+import type { Post } from '../lib/posts';
+interface Props {
+  posts: Post[];
+  kind: 'blogs' | 'notes';
+}
+const { posts, kind } = Astro.props;
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
+---
+
+{
+  posts.length ? (
+    <section
+      data-post-list
+      aria-label={kind === 'blogs' ? 'Blog posts' : 'TIL notes'}
+    >
+      <div data-filter-controls hidden>
+        <label class="sr-only" for="post-search">
+          Search posts
+        </label>
+        <input type="search" id="post-search" placeholder={`Search ${kind}…`} />
+        <div class="filters" role="group" aria-label="Filter by topic">
+          <button type="button" data-filter="" aria-pressed="true">
+            All topics
+          </button>
+          {tags.map((tag) => (
+            <button type="button" data-filter={tag} aria-pressed="false">
+              {tag}
+            </button>
+          ))}
+        </div>
+        <p class="sr-only" aria-live="polite" data-search-status />
+      </div>
+      <div class="notes">
+        {posts.map((post) => (
+          <PostCard post={post} searchable />
+        ))}
+      </div>
+      <p class="empty" data-no-results hidden>
+        No posts found. Try another search or topic.
+      </p>
+    </section>
+  ) : (
+    <p class="empty">No {kind} published yet. Check back for the first one.</p>
+  )
+}
+<script>
+  import '../scripts/post-filter';
+</script>
+<style>
+  section {
+    margin-top: 28px;
+  }
+  .notes {
+    border-top: 1px solid var(--line);
+  }
+  .filters {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin: 18px 0 20px;
+  }
+  button {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  button[aria-pressed='true'] {
+    background: var(--accent);
+    color: var(--on-accent);
+    border-color: var(--accent);
+  }
+  input {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    border-radius: 4px;
+    font-size: 16px;
+  }
+</style>

@@ -1,0 +1,119 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { Post } from '../lib/posts';
+import { formatDate, readingTime } from '../lib/post-utils';
+import { profile } from '../data/profile';
+import '../styles/prose.css';
+interface Props {
+  post: Post;
+  headings: { depth: number; slug: string; text: string }[];
+}
+const { post, headings } = Astro.props;
+const { title, description, pubDate, updatedDate, draft, sample, tags } =
+  post.data;
+const toc = headings.filter(
+  (heading) => heading.depth === 2 || heading.depth === 3,
+);
+---
+
+<BaseLayout title={title} description={description} noindex={draft} article>
+  <Fragment slot="head"
+    ><meta property="article:published_time" content={pubDate.toISOString()} />{
+      updatedDate && (
+        <meta
+          property="article:modified_time"
+          content={updatedDate.toISOString()}
+        />
+      )
+    }</Fragment
+  >
+  <article class="article">
+    <a class="mono" href={`/${post.collection}/`}
+      >← Back to {post.collection === 'blog' ? 'blogs' : 'notes'}</a
+    >
+    <h1>{title}</h1><p class="lead">{description}</p>
+    <div class="meta">
+      {profile.name} · <time datetime={pubDate.toISOString()}
+        >{formatDate(pubDate)}</time
+      > · {readingTime(post.body || '')}{
+        updatedDate && (
+          <span>
+            {' '}
+            · Updated{' '}
+            <time datetime={updatedDate.toISOString()}>
+              {formatDate(updatedDate)}
+            </time>
+          </span>
+        )
+      }
+    </div>
+    {tags.length > 0 && <p class="tags">{tags.join(' / ')}</p>}
+    {
+      draft && (
+        <p class="notice">
+          <strong>Draft — local preview only.</strong> This page is excluded
+          from the production build.
+        </p>
+      )
+    }
+    {
+      sample && (
+        <p class="notice">
+          Example post — starter content, not a published article by Nguyen.
+        </p>
+      )
+    }
+    {
+      toc.length > 0 && (
+        <nav class="toc" aria-label="On this page">
+          <>
+            <span class="mono">On this page</span>
+            <ul>
+              {toc.map((heading) => (
+                <li class:list={{ nested: heading.depth === 3 }}>
+                  <a href={`#${heading.slug}`}>{heading.text}</a>
+                </li>
+              ))}
+            </ul>
+          </>
+        </nav>
+      )
+    }
+    <div class="prose"><slot /></div>
+  </article>
+</BaseLayout>
+<style>
+  .article {
+    max-width: 700px;
+  }
+  h1 {
+    font-size: 51px;
+  }
+  .tags {
+    font: 11px var(--font-mono);
+    color: var(--accent);
+    margin-top: 16px;
+  }
+  .toc {
+    border-block: 1px solid var(--line);
+    padding: 18px 0;
+    margin: 28px 0;
+  }
+  .toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+  }
+  .toc li {
+    font-size: 13px;
+    padding: 3px 0;
+  }
+  .toc li.nested {
+    padding-left: 16px;
+  }
+  @media (max-width: 800px) {
+    h1 {
+      font-size: 42px;
+    }
+  }
+</style>

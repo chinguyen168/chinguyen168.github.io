@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/posts';
+const posts = await getPosts('til');
+const description =
+  'Short notes on discoveries worth keeping. Small enough to write today, useful enough to find again.';
+---
+
+<BaseLayout title="Today I learned" description={description}>
+  <PageHeader eyebrow="The learning log" description={description}
+    >A little wiser,<br /><em>one note at a time.</em></PageHeader
+  >
+  {
+    posts.some((post) => post.data.draft) && (
+      <p class="notice">
+        Local preview includes drafts. Draft posts are excluded from the
+        production build.
+      </p>
+    )
+  }
+  <PostList posts={posts} kind="notes" />
+</BaseLayout>

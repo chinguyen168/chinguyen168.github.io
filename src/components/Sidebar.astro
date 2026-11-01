@@ -1,0 +1,172 @@
+---
+import { profile } from '../data/profile';
+import ThemeToggle from './ThemeToggle.astro';
+const links = [
+  { href: '/', label: 'Home', icon: '⌂' },
+  { href: '/about/', label: 'About & experience', icon: '◯' },
+  { href: '/blog/', label: 'Blogs', icon: '▤' },
+  { href: '/til/', label: 'Today I learned', icon: '✳' },
+  { href: '/projects/', label: 'Projects', icon: '▧' },
+];
+const path = Astro.url.pathname;
+---
+
+<aside>
+  <a class="brand" href="/">{profile.wordmark}<span>.dev</span></a>
+  <div class="identity">
+    <strong>{profile.name}</strong><span>{profile.role}</span>
+  </div>
+  <ThemeToggle />
+  <nav aria-label="Main navigation">
+    {
+      links.map(({ href, label, icon }) => {
+        const active = href === '/' ? path === '/' : path.startsWith(href);
+        return (
+          <a
+            href={href}
+            class:list={{ active }}
+            aria-current={active ? 'page' : undefined}
+          >
+            <>
+              <span aria-hidden="true">{icon}</span>
+              <span>{label}</span>
+            </>
+          </a>
+        );
+      })
+    }
+  </nav>
+  <div class="aside-bottom">
+    <p>A little corner of the internet.<br />Always a work in progress.</p><a
+      href={profile.github}
+      target="_blank"
+      rel="noopener noreferrer">GitHub ↗</a
+    >
+  </div>
+</aside>
+<style>
+  aside {
+    padding: 45px 32px;
+    border-right: 1px solid var(--line);
+    background: var(--sidebar);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    overflow-y: auto;
+  }
+  .brand {
+    font: 400 21px/1.4 var(--font-mono);
+    width: max-content;
+  }
+  .brand span {
+    color: var(--accent);
+  }
+  .identity {
+    margin: 28px 0 20px;
+  }
+  .identity strong,
+  .identity span {
+    display: block;
+  }
+  .identity strong {
+    font-weight: 600;
+  }
+  .identity span {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  nav {
+    display: grid;
+    gap: 6px;
+  }
+  nav a {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 9px 11px;
+    margin-left: -12px;
+    font-size: 12px;
+    color: var(--muted);
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+  nav a.active {
+    background: var(--panel);
+    color: var(--accent);
+    border-color: var(--line);
+  }
+  nav a.active::after {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-left: auto;
+  }
+  .aside-bottom {
+    margin-top: auto;
+    padding-top: 35px;
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .aside-bottom p {
+    line-height: 1.8;
+  }
+  .aside-bottom a {
+    color: var(--ink);
+  }
+  @media (max-width: 1100px) {
+    aside {
+      padding-inline: 25px 22px;
+    }
+  }
+  @media (max-width: 800px) {
+    aside {
+      position: relative;
+      height: auto;
+      overflow: visible;
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      padding: 18px 24px;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 12px;
+      align-items: center;
+    }
+    .brand {
+      font-size: 20px;
+      grid-column: 1 / 3;
+    }
+    .identity {
+      grid-column: 1 / -1;
+      margin: 0;
+    }
+    .identity strong {
+      font-size: 13px;
+    }
+    .identity span {
+      font-size: 11px;
+    }
+    nav {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    nav a {
+      margin: 0;
+      padding: 8px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    nav a.active::after {
+      display: none;
+    }
+    .aside-bottom {
+      display: none;
+    }
+  }
+</style>

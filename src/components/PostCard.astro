@@ -1,0 +1,125 @@
+---
+import type { Post } from '../lib/posts';
+import { postUrl } from '../lib/posts';
+import { readingTime, formatDate } from '../lib/post-utils';
+interface Props {
+  post: Post;
+  featured?: boolean;
+  searchable?: boolean;
+}
+const { post, featured = false, searchable = false } = Astro.props;
+const { title, description, tags, draft } = post.data;
+---
+
+<article
+  class:list={['post-card', { featured }]}
+  data-post-card={searchable || undefined}
+  data-tags={JSON.stringify(tags)}
+  data-search={[title, description, ...tags].join(' ').toLocaleLowerCase()}
+>
+  <a href={postUrl(post)}>
+    <span class="note-icon" aria-hidden="true"
+      >{post.collection === 'til' ? '✳' : '▤'}</span
+    >
+    <div class="copy">
+      {featured && <span class="tag">{tags.join(' / ') || 'Blog'}</span>}
+      <h3>{title}</h3><p class="description">{description}</p>
+      <div class="meta">
+        {draft && <span class="draft-tag">Draft · </span>}{
+          post.data.sample && 'Example · '
+        }<time datetime={post.data.pubDate.toISOString()}
+          >{formatDate(post.data.pubDate)}</time
+        > · {readingTime(post.body || '')}
+      </div>
+    </div>
+    <span class="arrow" aria-hidden="true">↗</span>
+    {
+      featured && (
+        <div class="art" aria-hidden="true">
+          <span>{'{ }'}</span>
+        </div>
+      )
+    }
+  </a>
+</article>
+<style>
+  .post-card {
+    border-bottom: 1px solid var(--line);
+  }
+  a {
+    display: grid;
+    grid-template-columns: 38px 1fr 25px;
+    gap: 5px;
+    padding: 19px 0;
+    align-items: start;
+  }
+  h3 {
+    font-size: 15px;
+    margin: 0 0 5px;
+  }
+  .description {
+    margin-bottom: 8px;
+  }
+  .meta {
+    margin: 5px 0 0;
+  }
+  .note-icon {
+    font: 21px var(--font-mono);
+    color: var(--green);
+  }
+  .arrow {
+    color: var(--muted);
+  }
+  a:hover h3 {
+    color: var(--accent);
+  }
+  .featured {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .featured:hover {
+    border-color: var(--accent);
+  }
+  .featured a {
+    padding: 0;
+    grid-template-columns: 1fr 180px;
+    gap: 0;
+  }
+  .featured .copy {
+    padding: 25px 29px;
+  }
+  .featured h3 {
+    font-size: 20px;
+    margin: 12px 0;
+  }
+  .featured .note-icon,
+  .featured .arrow {
+    display: none;
+  }
+  .art {
+    align-self: stretch;
+    display: grid;
+    place-items: center;
+    background-color: var(--panel);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .art span {
+    font: 48px var(--font-mono);
+    color: var(--accent);
+  }
+  @media (max-width: 800px) {
+    .featured a {
+      grid-template-columns: 1fr 85px;
+    }
+    .featured .copy {
+      padding: 20px;
+    }
+    .art span {
+      font-size: 32px;
+    }
+  }
+</style>
