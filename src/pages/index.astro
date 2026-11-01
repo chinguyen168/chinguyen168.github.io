@@ -103,17 +103,17 @@ const notes = await getPosts('til');
     border-bottom: 1px solid var(--line);
   }
   .hero h1 {
-    font-size: clamp(32px, 3.6vw, 50px);
+    font-size: clamp(2.25rem, 4vw, 3.5rem);
     margin: 19px 0;
-    letter-spacing: -1.8px;
+    letter-spacing: -0.04em;
   }
   .hero .mono {
-    font-size: 10px;
+    font-size: var(--text-label);
     letter-spacing: 0.5px;
   }
   .intro {
-    font-size: 14px;
-    line-height: 1.85;
+    font-size: var(--text-body);
+    line-height: 1.75;
     max-width: 450px;
     color: var(--muted);
   }
@@ -123,12 +123,12 @@ const notes = await getPosts('til');
     align-items: center;
     margin-top: 26px;
     flex-wrap: wrap;
-    font-size: 12px;
+    font-size: var(--text-control);
   }
   .codebox {
     border: 1px solid var(--line);
     background: var(--code);
-    border-radius: 7px;
+    border-radius: var(--radius-box);
     overflow: hidden;
     min-width: 0;
   }
@@ -138,7 +138,7 @@ const notes = await getPosts('til');
     display: flex;
     justify-content: space-between;
     color: var(--muted);
-    font: 10px var(--font-mono);
+    font: var(--text-label) var(--font-mono);
   }
   .codebar > span:first-child {
     letter-spacing: 3px;
@@ -148,9 +148,9 @@ const notes = await getPosts('til');
     padding: 18px;
     margin: 0;
     color: var(--ink);
-    font: 11px/2 var(--font-mono);
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
+    font: var(--text-code)/1.8 var(--font-mono);
+    white-space: pre;
+    overflow-x: auto;
   }
   .syntax-keyword {
     color: var(--green);
@@ -161,7 +161,7 @@ const notes = await getPosts('til');
   .codefoot {
     padding: 10px 15px;
     border-top: 1px solid var(--line);
-    font: 9px/1.7 var(--font-mono);
+    font: var(--text-label)/1.7 var(--font-mono);
     color: var(--muted);
     display: flex;
     flex-wrap: wrap;
@@ -178,16 +178,13 @@ const notes = await getPosts('til');
       grid-template-columns: 1fr;
     }
     .hero h1 {
-      font-size: 48px;
+      font-size: var(--text-title);
     }
     .intro {
       max-width: 500px;
     }
     .codebox {
       max-width: 520px;
-    }
-    .codebox pre {
-      font-size: 12px;
     }
     .hero-copy {
       max-width: 600px;
@@ -197,14 +194,6 @@ const notes = await getPosts('til');
     .hero {
       padding-top: 20px;
       gap: 25px;
-    }
-    .hero h1 {
-      font-size: 43px;
-    }
-  }
-  @media (max-width: 380px) {
-    .hero h1 {
-      font-size: 36px;
     }
   }
 </style>

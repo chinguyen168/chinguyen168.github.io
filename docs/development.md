@@ -84,7 +84,7 @@ Bundled example posts remain drafts. Local development displays them so you can 
 
 ```text
 src/
-  components/       Shared sidebar, theme buttons, post cards, filters
+  components/       Shared sidebar, theme selector, post cards, filters
   layouts/          Page shell, metadata, article layout
   pages/            File-based routes and RSS endpoint
   content/
@@ -104,7 +104,7 @@ Change your name, role, biography, GitHub link, interests, or experience in `src
 
 Change the two palettes in `src/styles/tokens.css`. Shared typography and layout live in `global.css`; article formatting lives in `prose.css`. Component-specific rules are scoped inside `.astro` components. There is no React dependency or client-side HTML router.
 
-The default theme is dark. Sun and moon buttons store the selection under the existing `np-theme` browser preference. Navigation, content, and heading links work without JavaScript; the theme buttons and filters are progressive enhancements.
+The footer theme dropdown offers Light, Dark, and System. New visitors follow their system appearance; existing `np-theme` Light/Dark preferences are preserved. System mode follows live appearance changes. With JavaScript disabled, CSS follows the system appearance and the inactive selector stays hidden. Navigation, content, and heading links work without JavaScript; the theme selector and filters are progressive enhancements.
 
 ## Commands
 
@@ -144,7 +144,7 @@ Recognized old root hash links (`#home`, `#about`, `#projects`, `#writing`, `#ti
 
 After deployment, check the workflow result, the custom-domain homepage, navigation, and any changed article URLs. Revert a faulty change through a new commit or pull request to `master`; the workflow deploys the reverted source.
 
-Google Fonts supplies DM Sans and DM Mono, with system fallbacks. Advanced structured data, AI-specific discovery, crawler policy, and analytics remain future work.
+Google Fonts supplies Geist and Geist Mono, with system fallbacks. Advanced structured data, AI-specific discovery, crawler policy, and analytics remain future work.
 
 ## Browser tests
 

@@ -1,24 +1,32 @@
 :root {
-  --font-sans: 'DM Sans', sans-serif;
-  --font-mono: 'DM Mono', monospace;
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
+  --radius-box: 0.5rem;
+  --text-label: 0.8125rem;
+  --text-small: 0.875rem;
+  --text-control: 1rem;
+  --text-body: 1.125rem;
+  --text-prose: 1.1875rem;
+  --text-code: 0.9375rem;
+  --text-title: clamp(2.25rem, 4.5vw, 3.5rem);
   --bg: #f8f7f3;
-  --ink: #363a2e;
-  --muted: #716d60;
-  --line: #dedfd6;
-  --accent: #85603a;
+  --ink: #292f26;
+  --muted: #605f53;
+  --line: #d5d8cc;
+  --accent: #78552f;
   --panel: #efefe7;
   --green: #596d48;
   --sidebar: #f8f7f3;
   --code: #efefe7;
-  --string: #96632e;
+  --string: #875927;
   --on-accent: #fffaf0;
   color-scheme: light;
 }
 :root[data-theme='dark'] {
   --bg: #111817;
-  --ink: #dce5de;
-  --muted: #9caea4;
-  --line: #344039;
+  --ink: #edf2ed;
+  --muted: #b0beb5;
+  --line: #3e5046;
   --accent: #a9e9a1;
   --panel: #17221e;
   --green: #a9e9a1;
@@ -27,4 +35,21 @@
   --string: #e2c891;
   --on-accent: #142015;
   color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #111817;
+    --ink: #edf2ed;
+    --muted: #b0beb5;
+    --line: #3e5046;
+    --accent: #a9e9a1;
+    --panel: #17221e;
+    --green: #a9e9a1;
+    --sidebar: #101614;
+    --code: #17221e;
+    --string: #e2c891;
+    --on-accent: #142015;
+    color-scheme: dark;
+  }
 }

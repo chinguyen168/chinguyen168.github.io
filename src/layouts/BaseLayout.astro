@@ -1,5 +1,6 @@
 ---
 import Sidebar from '../components/Sidebar.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 import { profile } from '../data/profile';
 import '../styles/tokens.css';
 import '../styles/global.css';
@@ -22,7 +23,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -49,14 +50,22 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <script is:inline>
+      let preference = 'system';
       try {
-        document.documentElement.dataset.theme =
-          localStorage.getItem('np-theme') === 'light' ? 'light' : 'dark';
+        const saved = localStorage.getItem('np-theme');
+        if (saved === 'light' || saved === 'dark') preference = saved;
       } catch {}
+      document.documentElement.dataset.themePreference = preference;
+      document.documentElement.dataset.theme =
+        preference === 'system'
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light'
+          : preference;
     </script>
     <slot name="head" />
   </head>
@@ -76,6 +85,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       </span>
       <span>Built with curiosity. Kept simple.</span>
       <a href="/rss.xml">RSS ↗</a>
+      <ThemeToggle />
     </footer>
   </body>
 </html>
