@@ -8,31 +8,31 @@ const description =
 ---
 
 <BaseLayout title="Projects" description={description}>
-  <PageHeader eyebrow="Built & explored" description={description}
-    >Learning<br /><em>by building.</em></PageHeader
-  >
+  <PageHeader eyebrow="Built & explored" description={description}>
+    Learning
+    <br />
+    <em>by building.</em>
+  </PageHeader>
   <div class="project-grid">
-    {
-      projects.map((project, index) => (
-        <article class="project-card">
-          <>
-            <span class="number">
-              {String(index + 1).padStart(2, '0')} / PROJECT
-            </span>
-            <h2>{project.name}</h2>
-            <p class="description">{project.description}</p>
-            <p class="meta">{project.technologies.join(' · ')}</p>
-            <a
-              href={`${profile.github}/${project.repo}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View repository ↗
-            </a>
-          </>
-        </article>
-      ))
-    }
+    {projects.map((project, index) => (
+      <article class="project-card">
+        <>
+          <span class="number">
+            {String(index + 1).padStart(2, '0')} / PROJECT
+          </span>
+          <h2>{project.name}</h2>
+          <p class="description">{project.description}</p>
+          <p class="meta">{project.technologies.join(' · ')}</p>
+          <a
+            href={`${profile.github}/${project.repo}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View repository ↗
+          </a>
+        </>
+      </article>
+    ))}
   </div>
 </BaseLayout>
 <style>

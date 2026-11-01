@@ -5,33 +5,42 @@ import { profile } from '../data/profile';
 ---
 
 <BaseLayout title="About & experience" description={profile.about}>
-  <PageHeader eyebrow="The person behind the code" description={profile.about}
-    >Developer.<br />Team lead.<br /><em>Always learning.</em></PageHeader
-  >
+  <PageHeader eyebrow="The person behind the code" description={profile.about}>
+    Developer.
+    <br />
+    Team lead.
+    <br />
+    <em>Always learning.</em>
+  </PageHeader>
   <div class="section-top">
-    <h2>Experience</h2><span class="mono">Current chapter</span>
+    <h2>Experience</h2>
+    <span class="mono">Current chapter</span>
   </div>
-  {
-    profile.experience.map((experience) => (
-      <section class="timeline">
-        <>
-          <span class="tag">{experience.period}</span>
-          <h3>{experience.title}</h3>
-          <p class="description">{experience.description}</p>
-        </>
-      </section>
-    ))
-  }
-  <div class="section-top"><h2>Tools & interests</h2></div><div class="chips">
-    {profile.interests.map((interest) => <span>{interest}</span>)}
+  {profile.experience.map((experience) => (
+    <section class="timeline">
+      <>
+        <span class="tag">{experience.period}</span>
+        <h3>{experience.title}</h3>
+        <p class="description">{experience.description}</p>
+      </>
+    </section>
+  ))}
+  <div class="section-top">
+    <h2>Tools & interests</h2>
+  </div>
+  <div class="chips">
+    {profile.interests.map((interest) => (
+      <span>{interest}</span>
+    ))}
   </div>
   <div class="bottom-note">
-    <span aria-hidden="true">↗</span><p>
-      Explore my work and open-source repositories on <a
-        href={profile.github}
-        target="_blank"
-        rel="noopener noreferrer">GitHub</a
-      >.
+    <span aria-hidden="true">↗</span>
+    <p>
+      Explore my work and open-source repositories on{' '}
+      <a href={profile.github} target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+      .
     </p>
   </div>
 </BaseLayout>

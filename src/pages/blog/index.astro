@@ -9,16 +9,16 @@ const description =
 ---
 
 <BaseLayout title="Blogs" description={description}>
-  <PageHeader eyebrow="The notebook" description={description}
-    >Ideas worth<br /><em>writing down.</em></PageHeader
-  >
-  {
-    posts.some((post) => post.data.draft) && (
-      <p class="notice">
-        Local preview includes drafts. Draft posts are excluded from the
-        production build.
-      </p>
-    )
-  }
+  <PageHeader eyebrow="The notebook" description={description}>
+    Ideas worth
+    <br />
+    <em>writing down.</em>
+  </PageHeader>
+  {posts.some((post) => post.data.draft) && (
+    <p class="notice">
+      Local preview includes drafts. Draft posts are excluded from the
+      production build.
+    </p>
+  )}
   <PostList posts={posts} kind="blogs" />
 </BaseLayout>

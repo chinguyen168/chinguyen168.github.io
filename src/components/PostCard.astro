@@ -18,28 +18,30 @@ const { title, description, tags, draft } = post.data;
   data-search={[title, description, ...tags].join(' ').toLocaleLowerCase()}
 >
   <a href={postUrl(post)}>
-    <span class="note-icon" aria-hidden="true"
-      >{post.collection === 'til' ? '✳' : '▤'}</span
-    >
+    <span class="note-icon" aria-hidden="true">
+      {post.collection === 'til' ? '✳' : '▤'}
+    </span>
     <div class="copy">
       {featured && <span class="tag">{tags.join(' / ') || 'Blog'}</span>}
-      <h3>{title}</h3><p class="description">{description}</p>
+      <h3>{title}</h3>
+      <p class="description">{description}</p>
       <div class="meta">
-        {draft && <span class="draft-tag">Draft · </span>}{
-          post.data.sample && 'Example · '
-        }<time datetime={post.data.pubDate.toISOString()}
-          >{formatDate(post.data.pubDate)}</time
-        > · {readingTime(post.body || '')}
+        {draft && <span class="draft-tag">Draft · </span>}
+        {post.data.sample && 'Example · '}
+        <time datetime={post.data.pubDate.toISOString()}>
+          {formatDate(post.data.pubDate)}
+        </time>{' '}
+        · {readingTime(post.body || '')}
       </div>
     </div>
-    <span class="arrow" aria-hidden="true">↗</span>
-    {
-      featured && (
-        <div class="art" aria-hidden="true">
-          <span>{'{ }'}</span>
-        </div>
-      )
-    }
+    <span class="arrow" aria-hidden="true">
+      ↗
+    </span>
+    {featured && (
+      <div class="art" aria-hidden="true">
+        <span>{'{ }'}</span>
+      </div>
+    )}
   </a>
 </article>
 <style>

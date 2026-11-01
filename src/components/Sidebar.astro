@@ -12,36 +12,41 @@ const path = Astro.url.pathname;
 ---
 
 <aside>
-  <a class="brand" href="/">{profile.wordmark}<span>.dev</span></a>
+  <a class="brand" href="/">
+    {profile.wordmark}
+    <span>.dev</span>
+  </a>
   <div class="identity">
-    <strong>{profile.name}</strong><span>{profile.role}</span>
+    <strong>{profile.name}</strong>
+    <span>{profile.role}</span>
   </div>
   <ThemeToggle />
   <nav aria-label="Main navigation">
-    {
-      links.map(({ href, label, icon }) => {
-        const active = href === '/' ? path === '/' : path.startsWith(href);
-        return (
-          <a
-            href={href}
-            class:list={{ active }}
-            aria-current={active ? 'page' : undefined}
-          >
-            <>
-              <span aria-hidden="true">{icon}</span>
-              <span>{label}</span>
-            </>
-          </a>
-        );
-      })
-    }
+    {links.map(({ href, label, icon }) => {
+      const active = href === '/' ? path === '/' : path.startsWith(href);
+      return (
+        <a
+          href={href}
+          class:list={{ active }}
+          aria-current={active ? 'page' : undefined}
+        >
+          <>
+            <span aria-hidden="true">{icon}</span>
+            <span>{label}</span>
+          </>
+        </a>
+      );
+    })}
   </nav>
   <div class="aside-bottom">
-    <p>A little corner of the internet.<br />Always a work in progress.</p><a
-      href={profile.github}
-      target="_blank"
-      rel="noopener noreferrer">GitHub ↗</a
-    >
+    <p>
+      A little corner of the internet.
+      <br />
+      Always a work in progress.
+    </p>
+    <a href={profile.github} target="_blank" rel="noopener noreferrer">
+      GitHub ↗
+    </a>
   </div>
 </aside>
 <style>

@@ -61,14 +61,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <slot name="head" />
   </head>
   <body>
-    <a class="skip" href="#main">Skip to content</a>
+    <a class="skip" href="#main">
+      Skip to content
+    </a>
     <div class="shell">
-      <Sidebar /><main id="main" tabindex="-1"><slot /></main>
+      <Sidebar />
+      <main id="main" tabindex="-1">
+        <slot />
+      </main>
     </div>
     <footer>
-      <span>© {new Date().getFullYear()} {profile.name}</span><span
-        >Built with curiosity. Kept simple.</span
-      ><a href="/rss.xml">RSS ↗</a>
+      <span>
+        © {new Date().getFullYear()} {profile.name}
+      </span>
+      <span>Built with curiosity. Kept simple.</span>
+      <a href="/rss.xml">RSS ↗</a>
     </footer>
   </body>
 </html>

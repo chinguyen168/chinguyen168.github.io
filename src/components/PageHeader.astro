@@ -6,8 +6,8 @@ interface Props {
 const { eyebrow, description } = Astro.props;
 ---
 
-<div class="eyebrow">{eyebrow}</div><h1 class="page-title"><slot /></h1><p
-  class="lead"
->
-  {description}
-</p>
+<div class="eyebrow">{eyebrow}</div>
+<h1 class="page-title">
+  <slot />
+</h1>
+<p class="lead">{description}</p>

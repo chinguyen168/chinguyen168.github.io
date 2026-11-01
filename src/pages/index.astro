@@ -15,18 +15,26 @@ const notes = await getPosts('til');
   </div>
   <section class="hero">
     <div class="hero-copy">
-      <div class="mono accent">// {profile.role}</div><h1>
-        Build thoughtfully.<br /><em>Learn constantly.</em>
-      </h1><p class="intro">{profile.introduction}</p><div class="hero-actions">
-        <a class="primary" href="/about/">A little about me ↗</a><a
-          href="/projects/">Explore my work →</a
-        >
+      <div class="mono accent">// {profile.role}</div>
+      <h1>
+        Build thoughtfully.
+        <br />
+        <em>Learn constantly.</em>
+      </h1>
+      <p class="intro">{profile.introduction}</p>
+      <div class="hero-actions">
+        <a class="primary" href="/about/">
+          A little about me ↗
+        </a>
+        <a href="/projects/">Explore my work →</a>
       </div>
     </div>
     <div class="codebox" aria-label="A playful introduction in Java">
       <div class="codebar">
-        <span aria-hidden="true">● ● ●</span><span>about.java</span>
-      </div><pre><code><span class="syntax-keyword">class</span> Nguyen {'{'}
+        <span aria-hidden="true">● ● ●</span>
+        <span>about.java</span>
+      </div>
+      <pre><code><span class="syntax-keyword">class</span> Nguyen {'{'}
   String role = <span class="syntax-string">"Java Developer"</span>;
   String also = <span class="syntax-string">"Team Lead"</span>;
 
@@ -35,9 +43,8 @@ const notes = await getPosts('til');
     learn();
     share();
   {'}'}
-{'}'}</code></pre><div
-        class="codefoot"
-      >
+{'}'}</code></pre>
+      <div class="codefoot">
         ~/nguyen/notebook <span>↳ always learning</span>
       </div>
     </div>
@@ -45,41 +52,40 @@ const notes = await getPosts('til');
   <section aria-labelledby="blog-heading">
     <div class="section-top">
       <h2 id="blog-heading">
-        From the notebook <span class="small-count"
-          >{String(blogs.length).padStart(2, '0')}</span
-        >
-      </h2><a href="/blog/">All blogs ↗</a>
-    </div>{
-      blogs[0] ? (
-        <PostCard post={blogs[0]} featured />
-      ) : (
-        <p class="empty">
-          The notebook is open. My first article is on its way.
-        </p>
-      )
-    }
+        From the notebook{' '}
+        <span class="small-count">{String(blogs.length).padStart(2, '0')}</span>
+      </h2>
+      <a href="/blog/">All blogs ↗</a>
+    </div>
+    {blogs[0] ? (
+      <PostCard post={blogs[0]} featured />
+    ) : (
+      <p class="empty">The notebook is open. My first article is on its way.</p>
+    )}
   </section>
   <section aria-labelledby="til-heading">
     <div class="section-top">
       <h2 id="til-heading">
         Today I learned <span class="small-count">Small discoveries</span>
-      </h2><a href="/til/">All notes ↗</a>
-    </div>{
-      notes.length ? (
-        <div class="notes">
-          {notes.slice(0, 3).map((post) => (
-            <PostCard post={post} />
-          ))}
-        </div>
-      ) : (
-        <p class="empty">Small discoveries, coming soon.</p>
-      )
-    }
+      </h2>
+      <a href="/til/">All notes ↗</a>
+    </div>
+    {notes.length ? (
+      <div class="notes">
+        {notes.slice(0, 3).map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <p class="empty">Small discoveries, coming soon.</p>
+    )}
   </section>
   <div class="bottom-note">
-    <span aria-hidden="true">✳</span><p>
-      A space for thinking out loud.<br />Small lessons, useful ideas, and the
-      occasional rabbit hole.
+    <span aria-hidden="true">✳</span>
+    <p>
+      A space for thinking out loud.
+      <br />
+      Small lessons, useful ideas, and the occasional rabbit hole.
     </p>
   </div>
 </BaseLayout>

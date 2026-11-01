@@ -9,42 +9,40 @@ const { posts, kind } = Astro.props;
 const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 ---
 
-{
-  posts.length ? (
-    <section
-      data-post-list
-      aria-label={kind === 'blogs' ? 'Blog posts' : 'TIL notes'}
-    >
-      <div data-filter-controls hidden>
-        <label class="sr-only" for="post-search">
-          Search posts
-        </label>
-        <input type="search" id="post-search" placeholder={`Search ${kind}…`} />
-        <div class="filters" role="group" aria-label="Filter by topic">
-          <button type="button" data-filter="" aria-pressed="true">
-            All topics
+{posts.length ? (
+  <section
+    data-post-list
+    aria-label={kind === 'blogs' ? 'Blog posts' : 'TIL notes'}
+  >
+    <div data-filter-controls hidden>
+      <label class="sr-only" for="post-search">
+        Search posts
+      </label>
+      <input type="search" id="post-search" placeholder={`Search ${kind}…`} />
+      <div class="filters" role="group" aria-label="Filter by topic">
+        <button type="button" data-filter="" aria-pressed="true">
+          All topics
+        </button>
+        {tags.map((tag) => (
+          <button type="button" data-filter={tag} aria-pressed="false">
+            {tag}
           </button>
-          {tags.map((tag) => (
-            <button type="button" data-filter={tag} aria-pressed="false">
-              {tag}
-            </button>
-          ))}
-        </div>
-        <p class="sr-only" aria-live="polite" data-search-status />
-      </div>
-      <div class="notes">
-        {posts.map((post) => (
-          <PostCard post={post} searchable />
         ))}
       </div>
-      <p class="empty" data-no-results hidden>
-        No posts found. Try another search or topic.
-      </p>
-    </section>
-  ) : (
-    <p class="empty">No {kind} published yet. Check back for the first one.</p>
-  )
-}
+      <p class="sr-only" aria-live="polite" data-search-status />
+    </div>
+    <div class="notes">
+      {posts.map((post) => (
+        <PostCard post={post} searchable />
+      ))}
+    </div>
+    <p class="empty" data-no-results hidden>
+      No posts found. Try another search or topic.
+    </p>
+  </section>
+) : (
+  <p class="empty">No {kind} published yet. Check back for the first one.</p>
+)}
 <script>
   import '../scripts/post-filter';
 </script>
