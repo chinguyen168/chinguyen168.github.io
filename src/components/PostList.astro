@@ -65,7 +65,7 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
     color: var(--ink);
     padding: 8px 15px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: var(--text-small);
   }
   button[aria-pressed='true'] {
     background: var(--accent);
@@ -79,6 +79,6 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
     border: 1px solid var(--line);
     color: var(--ink);
     border-radius: 4px;
-    font-size: 16px;
+    font-size: var(--text-body);
   }
 </style>

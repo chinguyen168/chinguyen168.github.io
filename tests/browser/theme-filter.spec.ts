@@ -1,66 +1,93 @@
 import { test, expect } from '@playwright/test';
 
-// Keep assertions at the browser interface: rendered content, controls, and persistence.
-test('fresh visits default dark and ordinary clicks do not persist a theme', async ({
-  page,
-}) => {
-  await page.goto('/');
-  const dark = page.getByRole('button', { name: 'Dark theme', exact: true });
-  await expect(dark).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-  await expect(page.locator('html')).not.toHaveAttribute('aria-pressed');
-  await page.getByRole('heading', { level: 1 }).click();
-  expect(
-    await page.evaluate(() => localStorage.getItem('np-theme')),
-  ).toBeNull();
-});
-
-test('theme selection updates both controls and survives reload and navigation', async ({
-  page,
-}) => {
-  await page.goto('/');
-  const light = page.getByRole('button', { name: 'Light theme', exact: true });
-  const dark = page.getByRole('button', { name: 'Dark theme', exact: true });
-  await light.click();
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-  await expect(light).toHaveAttribute('aria-pressed', 'true');
-  await expect(dark).toHaveAttribute('aria-pressed', 'false');
-  expect(await page.evaluate(() => localStorage.getItem('np-theme'))).toBe(
-    'light',
-  );
-  await page.reload();
-  await expect(light).toHaveAttribute('aria-pressed', 'true');
-  await page.getByRole('link', { name: /About & experience/ }).click();
-  await expect(page).toHaveURL(/\/about\/$/);
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-  await dark.click();
-  await expect(dark).toHaveAttribute('aria-pressed', 'true');
-  await expect(light).toHaveAttribute('aria-pressed', 'false');
-  expect(await page.evaluate(() => localStorage.getItem('np-theme'))).toBe(
-    'dark',
-  );
-  await expect(page.locator('html')).not.toHaveAttribute('aria-pressed');
-});
-
-test('saved light initializes without the interactive module scripts', async ({
-  page,
-}) => {
-  await page.addInitScript(() => localStorage.setItem('np-theme', 'light'));
-  // Astro may inline small processed scripts. Remove both inline and external
-  // module scripts so only the synchronous head initializer can apply the theme.
-  await page.route('**/', async (route) => {
-    const response = await route.fetch();
-    const html = (await response.text()).replace(
-      /<script\b[^>]*\btype=["']module["'][^>]*>[\s\S]*?<\/script>/gi,
-      '',
+for (const colorScheme of ['light', 'dark'] as const) {
+  test(`fresh visits follow ${colorScheme} system appearance`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ colorScheme });
+    await page.goto('/');
+    const theme = page.getByRole('combobox', { name: 'Theme', exact: true });
+    await expect(theme).toHaveValue('system');
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-theme',
+      colorScheme,
     );
-    await route.fulfill({ response, body: html });
+    await page.getByRole('heading', { level: 1 }).click();
+    expect(
+      await page.evaluate(() => localStorage.getItem('np-theme')),
+    ).toBeNull();
   });
+  test(`saved ${colorScheme} initializes before interactive scripts`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({
+      colorScheme: colorScheme === 'light' ? 'dark' : 'light',
+    });
+    await page.addInitScript(
+      (theme) => localStorage.setItem('np-theme', theme),
+      colorScheme,
+    );
+    await page.route('**/', async (route) => {
+      const response = await route.fetch();
+      const html = (await response.text()).replace(
+        /<script\b[^>]*\btype=["']module["'][^>]*>[\s\S]*?<\/script>/gi,
+        '',
+      );
+      await route.fulfill({ response, body: html });
+    });
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-theme',
+      colorScheme,
+    );
+    await expect(
+      page.getByRole('combobox', { name: 'Theme', exact: true }),
+    ).toBeHidden();
+  });
+}
+
+test('footer dropdown persists explicit choices and System follows live changes', async ({
+  page,
+}) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
   await page.goto('/');
+  const theme = page
+    .getByRole('contentinfo')
+    .getByRole('combobox', { name: 'Theme', exact: true });
+  await theme.selectOption('light');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-  await expect(
-    page.getByRole('button', { name: 'Light theme', exact: true }),
-  ).toHaveAttribute('aria-pressed', 'false');
+  await page.reload();
+  await expect(theme).toHaveValue('light');
+  await page.getByRole('link', { name: /About & experience/ }).click();
+  await expect(theme).toHaveValue('light');
+  await theme.selectOption('dark');
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.reload();
+  await expect(theme).toHaveValue('dark');
+  await theme.selectOption('system');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.reload();
+  await expect(theme).toHaveValue('system');
+  expect(await page.evaluate(() => localStorage.getItem('np-theme'))).toBe(
+    'system',
+  );
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+});
+
+test('theme dropdown supports keyboard selection', async ({ page }) => {
+  await page.goto('/');
+  const theme = page.getByRole('combobox', { name: 'Theme', exact: true });
+  await expect(theme).toBeVisible();
+  await theme.focus();
+  await expect(theme).toBeFocused();
+  await theme.press('l');
+  await theme.press('Enter');
+  await expect(theme).toHaveValue('light');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
 });
 
 test('theme selection still works when storage access is blocked', async ({
@@ -78,11 +105,12 @@ test('theme selection still works when storage access is blocked', async ({
     }
   });
   await page.goto('/');
-  await page.getByRole('button', { name: 'Light theme', exact: true }).click();
+  const theme = page.getByRole('combobox', { name: 'Theme', exact: true });
+  await theme.selectOption('light');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-  await expect(
-    page.getByRole('button', { name: 'Light theme', exact: true }),
-  ).toHaveAttribute('aria-pressed', 'true');
+  await theme.selectOption('system');
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   expect(errors).toEqual([]);
 });
 
@@ -129,6 +157,22 @@ for (const path of ['/blog/', '/til/']) {
 
 test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
+
+  for (const colorScheme of ['light', 'dark'] as const) {
+    test(`CSS follows ${colorScheme} appearance without JavaScript`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ colorScheme });
+      await page.goto('/');
+      await expect(page.locator('body')).toHaveCSS(
+        'background-color',
+        colorScheme === 'dark' ? 'rgb(17, 24, 23)' : 'rgb(248, 247, 243)',
+      );
+      await expect(
+        page.getByRole('combobox', { name: 'Theme', exact: true }),
+      ).toBeHidden();
+    });
+  }
 
   test('posts and navigation remain usable', async ({ page }) => {
     await page.goto('/blog/');

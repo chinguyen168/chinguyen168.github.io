@@ -79,13 +79,13 @@ const toc = headings.filter(
 </BaseLayout>
 <style>
   .article {
-    max-width: 700px;
+    max-width: 760px;
   }
   h1 {
-    font-size: 51px;
+    font-size: var(--text-title);
   }
   .tags {
-    font: 11px var(--font-mono);
+    font: var(--text-label) var(--font-mono);
     color: var(--accent);
     margin-top: 16px;
   }
@@ -100,15 +100,10 @@ const toc = headings.filter(
     margin: 10px 0 0;
   }
   .toc li {
-    font-size: 13px;
+    font-size: var(--text-control);
     padding: 3px 0;
   }
   .toc li.nested {
     padding-left: 16px;
-  }
-  @media (max-width: 800px) {
-    h1 {
-      font-size: 42px;
-    }
   }
 </style>

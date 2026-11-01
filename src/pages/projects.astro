@@ -57,31 +57,32 @@ const description =
   }
   .context {
     color: var(--muted);
-    font-size: 12px;
+    font-size: var(--text-small);
   }
   .project-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
     margin-top: 32px;
   }
   .project-card {
-    padding: 25px;
+    padding: 28px;
+    overflow-wrap: anywhere;
     border: 1px solid var(--line);
     background: var(--panel);
     border-radius: 6px;
   }
   .number {
-    font: 12px var(--font-mono);
+    font: var(--text-label) var(--font-mono);
     color: var(--accent);
   }
   h2 {
-    font-size: 21px;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: 600;
     margin-top: 12px;
   }
   .project-card a {
-    font-size: 12px;
+    font-size: var(--text-small);
   }
   @media (max-width: 800px) {
     .project-grid {
