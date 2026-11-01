@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { profile } from '../data/profile';
+---
+
+<BaseLayout title="About & experience" description={profile.about}>
+  <PageHeader eyebrow="The person behind the code" description={profile.about}
+    >Developer.<br />Team lead.<br /><em>Always learning.</em></PageHeader
+  >
+  <div class="section-top">
+    <h2>Experience</h2><span class="mono">Current chapter</span>
+  </div>
+  {
+    profile.experience.map((experience) => (
+      <section class="timeline">
+        <>
+          <span class="tag">{experience.period}</span>
+          <h3>{experience.title}</h3>
+          <p class="description">{experience.description}</p>
+        </>
+      </section>
+    ))
+  }
+  <div class="section-top"><h2>Tools & interests</h2></div><div class="chips">
+    {profile.interests.map((interest) => <span>{interest}</span>)}
+  </div>
+  <div class="bottom-note">
+    <span aria-hidden="true">↗</span><p>
+      Explore my work and open-source repositories on <a
+        href={profile.github}
+        target="_blank"
+        rel="noopener noreferrer">GitHub</a
+      >.
+    </p>
+  </div>
+</BaseLayout>
+<style>
+  .timeline {
+    border-left: 1px solid var(--line);
+    padding-left: 25px;
+    margin: 35px 0;
+  }
+  .timeline h3 {
+    font-size: 24px;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chips span {
+    background: var(--panel);
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+</style>

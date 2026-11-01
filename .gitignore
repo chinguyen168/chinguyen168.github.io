@@ -1,5 +1,9 @@
-*.gem
-.bundle
-.sass-cache
-_site
-Gemfile.lock
+.DS_Store
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc

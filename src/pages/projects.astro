@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { projects } from '../data/projects';
+import { profile } from '../data/profile';
+const description =
+  'A selection of projects from my GitHub. Experiments, starting points, and ideas turned into code.';
+---
+
+<BaseLayout title="Projects" description={description}>
+  <PageHeader eyebrow="Built & explored" description={description}
+    >Learning<br /><em>by building.</em></PageHeader
+  >
+  <div class="project-grid">
+    {
+      projects.map((project, index) => (
+        <article class="project-card">
+          <>
+            <span class="number">
+              {String(index + 1).padStart(2, '0')} / PROJECT
+            </span>
+            <h2>{project.name}</h2>
+            <p class="description">{project.description}</p>
+            <p class="meta">{project.technologies.join(' · ')}</p>
+            <a
+              href={`${profile.github}/${project.repo}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View repository ↗
+            </a>
+          </>
+        </article>
+      ))
+    }
+  </div>
+</BaseLayout>
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 32px;
+  }
+  .project-card {
+    padding: 25px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 6px;
+  }
+  .number {
+    font: 12px var(--font-mono);
+    color: var(--accent);
+  }
+  h2 {
+    font-size: 21px;
+    font-weight: 500;
+    margin-top: 12px;
+  }
+  .project-card a {
+    font-size: 12px;
+  }
+  @media (max-width: 800px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

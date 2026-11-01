@@ -1,0 +1,29 @@
+---
+import { getPosts, postUrl } from '../lib/posts';
+const posts = [...(await getPosts('blog')), ...(await getPosts('til'))];
+const redirects = Object.fromEntries(
+  posts.map((post) => [`#post/${post.id}`, postUrl(post)]),
+);
+Object.assign(redirects, {
+  '#home': '/',
+  '#about': '/about/',
+  '#projects': '/projects/',
+  '#writing': '/blog/',
+  '#til': '/til/',
+  '#desk': '/blog/',
+});
+---
+
+<div hidden id="legacy-routes" data-routes={JSON.stringify(redirects)}></div>
+<script>
+  const element = document.getElementById('legacy-routes');
+  const routes: Record<string, string> = JSON.parse(
+    element?.dataset.routes || '{}',
+  );
+  function redirect() {
+    const target = routes[window.location.hash];
+    if (target) window.location.replace(target);
+  }
+  redirect();
+  window.addEventListener('hashchange', redirect);
+</script>

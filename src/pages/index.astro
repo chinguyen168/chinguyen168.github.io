@@ -1,0 +1,200 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import LegacyRedirect from '../components/LegacyRedirect.astro';
+import { profile } from '../data/profile';
+import { getPosts } from '../lib/posts';
+const blogs = await getPosts('blog');
+const notes = await getPosts('til');
+---
+
+<BaseLayout>
+  <LegacyRedirect />
+  <div class="eyebrow">
+    <span class="dot"></span>A personal notebook / {profile.name}
+  </div>
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="mono accent">// {profile.role}</div><h1>
+        Build thoughtfully.<br /><em>Learn constantly.</em>
+      </h1><p class="intro">{profile.introduction}</p><div class="hero-actions">
+        <a class="primary" href="/about/">A little about me ↗</a><a
+          href="/projects/">Explore my work →</a
+        >
+      </div>
+    </div>
+    <div class="codebox" aria-label="A playful introduction in Java">
+      <div class="codebar">
+        <span aria-hidden="true">● ● ●</span><span>about.java</span>
+      </div><pre><code><span class="syntax-keyword">class</span> Nguyen {'{'}
+  String role = <span class="syntax-string">"Java Developer"</span>;
+  String also = <span class="syntax-string">"Team Lead"</span>;
+
+  void next() {'{'}
+    build();
+    learn();
+    share();
+  {'}'}
+{'}'}</code></pre><div
+        class="codefoot"
+      >
+        ~/nguyen/notebook <span>↳ always learning</span>
+      </div>
+    </div>
+  </section>
+  <section aria-labelledby="blog-heading">
+    <div class="section-top">
+      <h2 id="blog-heading">
+        From the notebook <span class="small-count"
+          >{String(blogs.length).padStart(2, '0')}</span
+        >
+      </h2><a href="/blog/">All blogs ↗</a>
+    </div>{
+      blogs[0] ? (
+        <PostCard post={blogs[0]} featured />
+      ) : (
+        <p class="empty">
+          The notebook is open. My first article is on its way.
+        </p>
+      )
+    }
+  </section>
+  <section aria-labelledby="til-heading">
+    <div class="section-top">
+      <h2 id="til-heading">
+        Today I learned <span class="small-count">Small discoveries</span>
+      </h2><a href="/til/">All notes ↗</a>
+    </div>{
+      notes.length ? (
+        <div class="notes">
+          {notes.slice(0, 3).map((post) => (
+            <PostCard post={post} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty">Small discoveries, coming soon.</p>
+      )
+    }
+  </section>
+  <div class="bottom-note">
+    <span aria-hidden="true">✳</span><p>
+      A space for thinking out loud.<br />Small lessons, useful ideas, and the
+      occasional rabbit hole.
+    </p>
+  </div>
+</BaseLayout>
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 30px;
+    align-items: center;
+    padding: 48px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero h1 {
+    font-size: clamp(32px, 3.6vw, 50px);
+    margin: 19px 0;
+    letter-spacing: -1.8px;
+  }
+  .hero .mono {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+  .intro {
+    font-size: 14px;
+    line-height: 1.85;
+    max-width: 450px;
+    color: var(--muted);
+  }
+  .hero-actions {
+    display: flex;
+    gap: 17px;
+    align-items: center;
+    margin-top: 26px;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .codebox {
+    border: 1px solid var(--line);
+    background: var(--code);
+    border-radius: 7px;
+    overflow: hidden;
+    min-width: 0;
+  }
+  .codebar {
+    padding: 11px 15px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font: 10px var(--font-mono);
+  }
+  .codebar > span:first-child {
+    letter-spacing: 3px;
+    opacity: 0.55;
+  }
+  .codebox pre {
+    padding: 18px;
+    margin: 0;
+    color: var(--ink);
+    font: 11px/2 var(--font-mono);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .syntax-keyword {
+    color: var(--green);
+  }
+  .syntax-string {
+    color: var(--string);
+  }
+  .codefoot {
+    padding: 10px 15px;
+    border-top: 1px solid var(--line);
+    font: 9px/1.7 var(--font-mono);
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 14px;
+  }
+  .codefoot span {
+    color: var(--green);
+  }
+  .notes {
+    border-top: 1px solid var(--line);
+  }
+  @media (max-width: 1150px) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+    .hero h1 {
+      font-size: 48px;
+    }
+    .intro {
+      max-width: 500px;
+    }
+    .codebox {
+      max-width: 520px;
+    }
+    .codebox pre {
+      font-size: 12px;
+    }
+    .hero-copy {
+      max-width: 600px;
+    }
+  }
+  @media (max-width: 800px) {
+    .hero {
+      padding-top: 20px;
+      gap: 25px;
+    }
+    .hero h1 {
+      font-size: 43px;
+    }
+  }
+  @media (max-width: 380px) {
+    .hero h1 {
+      font-size: 36px;
+    }
+  }
+</style>
