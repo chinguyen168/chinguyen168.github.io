@@ -1,5 +1,6 @@
 export {};
-const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme]');
+const buttons =
+  document.querySelectorAll<HTMLButtonElement>('button[data-theme]');
 function syncTheme() {
   const theme =
     document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';

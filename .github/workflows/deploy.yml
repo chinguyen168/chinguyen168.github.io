@@ -31,6 +31,8 @@ jobs:
       - run: npm run format:check
       - run: npm run check
       - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
       - run: npm run build
       - name: Upload production site
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'

@@ -145,3 +145,14 @@ Recognized old root hash links (`#home`, `#about`, `#projects`, `#writing`, `#ti
 After deployment, check the workflow result, the custom-domain homepage, navigation, and any changed article URLs. Revert a faulty change through a new commit or pull request to `master`; the workflow deploys the reverted source.
 
 Google Fonts supplies DM Sans and DM Mono, with system fallbacks. Advanced structured data, AI-specific discovery, crawler policy, and analytics remain future work.
+
+## Browser tests
+
+Install Chromium once after `npm ci`, then run the focused browser suite:
+
+```sh
+npx playwright install chromium
+npm run test:browser
+```
+
+Playwright builds a temporary copy with deterministic published blog/TIL fixtures, serves it on `127.0.0.1:4322`, and removes it after the run. Your posts and local preview on port 4321 remain untouched. Tests exercise desktop and mobile Chromium, theme selection and persistence, blocked storage, filtering and result announcements, and navigation without JavaScript. Failed runs retain traces and screenshots under `test-results/`. CI installs Chromium and runs this suite before deployment.
