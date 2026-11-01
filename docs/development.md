@@ -4,7 +4,7 @@ Use this guide to work on the Astro site or publish Markdown posts. Public profi
 
 ## Quick start
 
-Use Node **22.23.4 or newer** and npm **9.6.5 or newer**. The development version is pinned in `.nvmrc` (Node 26.7.0).
+Use Node **22.23.4 or newer** and npm **9.6.5 or newer**. The development version is pinned in `.nvmrc` (Node 26.13.0 LTS).
 
 ```sh
 # Optional, if you use nvm
